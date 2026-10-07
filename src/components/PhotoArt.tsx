@@ -15,7 +15,14 @@ export const PhotoFrame: React.FC<PhotoProps> = ({
   aspectRatio = 'aspect-[3/4]',
   altText = 'Фотография',
 }) => {
-  const imageSrc =
+  const webpSrc =
+    id === 'merey'
+      ? '/photos/merey.detsky.webp'
+      : id === 'manas'
+      ? '/photos/manas.detsky.webp'
+      : '/photos/photo_2026-10-07_00-04-30.webp';
+
+  const fallbackSrc =
     id === 'merey'
       ? '/photos/merey.detsky.png'
       : id === 'manas'
@@ -25,12 +32,16 @@ export const PhotoFrame: React.FC<PhotoProps> = ({
   return (
     <div className={`relative ${className}`}>
       <div className={`relative w-full ${aspectRatio} overflow-hidden bg-stone-100 rounded-[1px]`}>
-        <img
-          src={imageSrc}
-          alt={altText}
-          loading="eager"
-          className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-        />
+        <picture>
+          <source srcSet={webpSrc} type="image/webp" />
+          <img
+            src={fallbackSrc}
+            alt={altText}
+            loading="eager"
+            decoding="async"
+            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+          />
+        </picture>
       </div>
 
       {caption && (

@@ -6,12 +6,16 @@ import React from 'react';
  */
 export const DaisyDoodle: React.FC<{ className?: string }> = ({ className = 'w-16 h-16' }) => (
   <div className={`inline-block select-none ${className}`}>
-    <img
-      src="/icons-photos/romashka.jpg"
-      alt="Ромашка"
-      loading="eager"
-      className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 hover:rotate-12 hover:scale-110 active:scale-95 cursor-pointer"
-    />
+    <picture>
+      <source srcSet="/icons-photos/romashka.webp" type="image/webp" />
+      <img
+        src="/icons-photos/romashka.jpg"
+        alt="Ромашка"
+        loading="eager"
+        decoding="async"
+        className="w-full h-full object-contain mix-blend-multiply transition-transform duration-500 hover:rotate-12 hover:scale-110 active:scale-95 cursor-pointer"
+      />
+    </picture>
   </div>
 );
 
@@ -20,12 +24,16 @@ export const DaisyDoodle: React.FC<{ className?: string }> = ({ className = 'w-1
  */
 export const CarDoodle: React.FC<{ className?: string }> = ({ className = 'w-28 h-auto' }) => (
   <div className={`inline-block select-none ${className}`}>
-    <img
-      src="/icons-photos/car.png"
-      alt="Голубая машинка"
-      loading="eager"
-      className="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 hover:translate-x-1.5 hover:scale-105 active:scale-95 cursor-pointer"
-    />
+    <picture>
+      <source srcSet="/icons-photos/car.webp" type="image/webp" />
+      <img
+        src="/icons-photos/car.png"
+        alt="Голубая машинка"
+        loading="eager"
+        decoding="async"
+        className="w-full h-full object-contain mix-blend-multiply transition-transform duration-300 hover:translate-x-1.5 hover:scale-105 active:scale-95 cursor-pointer"
+      />
+    </picture>
   </div>
 );
 
@@ -120,12 +128,16 @@ export const HeartFormulaDoodle: React.FC<{ className?: string }> = ({ className
  */
 export const KidsStickFigureDoodle: React.FC<{ className?: string }> = ({ className = 'w-36 sm:w-40 h-auto' }) => (
   <div className="animate-stick-sway origin-bottom inline-block">
-    <img
-      src="/icons-photos/drawn-couple.jpg"
-      alt="Нарисованная пара — Манас и Мерей"
-      loading="eager"
-      className={`${className} object-contain mix-blend-multiply mx-auto transition-transform duration-300 hover:scale-105 select-none`}
-    />
+    <picture>
+      <source srcSet="/icons-photos/drawn-couple.webp" type="image/webp" />
+      <img
+        src="/icons-photos/drawn-couple.jpg"
+        alt="Нарисованная пара — Манас и Мерей"
+        loading="eager"
+        decoding="async"
+        className={`${className} object-contain mix-blend-multiply mx-auto transition-transform duration-300 hover:scale-105 select-none`}
+      />
+    </picture>
   </div>
 );
 
