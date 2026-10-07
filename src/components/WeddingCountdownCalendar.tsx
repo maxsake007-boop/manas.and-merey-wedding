@@ -75,7 +75,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
         {/* Month & Year Title */}
         <ScrollReveal animation="fade-up" duration={700} className="text-center mb-6">
           <h2
-            className="text-[28px] sm:text-[30px] font-normal text-stone-900 tracking-[0.08em] uppercase"
+            className="text-[32px] sm:text-[34px] font-normal text-stone-900 tracking-[0.08em] uppercase"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
             {t.monthTitle}
@@ -90,7 +90,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
               {t.weekdays.map((day) => (
                 <div
                   key={day}
-                  className="text-[14px] sm:text-[15px] text-stone-700 font-medium tracking-wide select-none"
+                  className="text-[16px] sm:text-[17px] text-stone-800 font-medium tracking-wide select-none"
                   style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
                 >
                   {day}
@@ -121,7 +121,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
                       </svg>
                       {/* Day number centered inside the heart */}
                       <span
-                        className="absolute inset-0 flex items-center justify-center text-white font-semibold text-[15px] sm:text-[16px] pt-1 pointer-events-none"
+                        className="absolute inset-0 flex items-center justify-center text-white font-semibold text-[16px] sm:text-[17px] pt-1 pointer-events-none"
                         style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                       >
                         22
@@ -133,7 +133,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
                 return (
                   <div
                     key={day}
-                    className="flex items-center justify-center h-9 w-9 sm:h-10 sm:w-10 mx-auto text-stone-800 text-[17px] sm:text-[18px] select-none hover:text-[#6e7a63] transition-colors"
+                    className="flex items-center justify-center h-9 w-9 sm:h-10 sm:w-10 mx-auto text-stone-800 text-[18px] sm:text-[19px] font-medium select-none hover:text-[#6e7a63] transition-colors"
                     style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                   >
                     {day}
@@ -152,13 +152,13 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
         {/* Timer Heading matching Reference 2 */}
         <ScrollReveal animation="fade-up" delay={100} duration={700} className="mb-7">
           <h3
-            className="text-[25px] sm:text-[27px] font-normal text-stone-900 tracking-[0.05em] uppercase leading-tight"
+            className="text-[28px] sm:text-[30px] font-normal text-stone-900 tracking-[0.05em] uppercase leading-tight"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif" }}
           >
             {t.timerTitle}
           </h3>
           <p
-            className="text-[22px] sm:text-[24px] font-normal text-stone-800 tracking-[0.03em] uppercase mt-0.5"
+            className="text-[24px] sm:text-[26px] font-normal text-stone-800 tracking-[0.03em] uppercase mt-0.5"
             style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
           >
             {t.timerSubtitle}
@@ -175,7 +175,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
                 <DigitCard digit={daysTens} />
                 <DigitCard digit={daysOnes} />
               </div>
-              <span className="text-[12px] sm:text-[12.5px] text-stone-600 mt-2 font-sans tracking-wide">
+              <span className="text-[13.5px] sm:text-[14px] text-stone-700 mt-2 font-sans font-medium tracking-wide">
                 {t.days}
               </span>
             </div>
@@ -186,7 +186,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
                 <DigitCard digit={hoursTens} />
                 <DigitCard digit={hoursOnes} />
               </div>
-              <span className="text-[12px] sm:text-[12.5px] text-stone-600 mt-2 font-sans tracking-wide">
+              <span className="text-[13.5px] sm:text-[14px] text-stone-700 mt-2 font-sans font-medium tracking-wide">
                 {t.hours}
               </span>
             </div>
@@ -197,7 +197,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
                 <DigitCard digit={minsTens} />
                 <DigitCard digit={minsOnes} />
               </div>
-              <span className="text-[12px] sm:text-[12.5px] text-stone-600 mt-2 font-sans tracking-wide">
+              <span className="text-[13.5px] sm:text-[14px] text-stone-700 mt-2 font-sans font-medium tracking-wide">
                 {t.minutes}
               </span>
             </div>
@@ -208,7 +208,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
                 <DigitCard digit={secsTens} />
                 <DigitCard digit={secsOnes} isSecond />
               </div>
-              <span className="text-[12px] sm:text-[12.5px] text-stone-600 mt-2 font-sans tracking-wide">
+              <span className="text-[13.5px] sm:text-[14px] text-stone-700 mt-2 font-sans font-medium tracking-wide">
                 {t.seconds}
               </span>
             </div>

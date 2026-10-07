@@ -18,7 +18,7 @@ import { ScrollReveal, IntroReadyContext } from './components/ScrollReveal';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { HandDrawnAirplaneIntro } from './components/HandDrawnAirplaneIntro';
 import { Language, translations } from './i18n/translations';
-import { Volume2, VolumeX, ExternalLink, MapPin } from 'lucide-react';
+import { Volume2, VolumeX, ExternalLink, MapPin, ChevronDown } from 'lucide-react';
 
 import { audioManager } from './services/audioManager';
 
@@ -40,12 +40,29 @@ export default function App() {
 
   const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(() => audioManager.getIsPlaying());
   const [isIntroOpen, setIsIntroOpen] = useState<boolean>(false);
+  const [showScrollIndicator, setShowScrollIndicator] = useState<boolean>(true);
 
   useEffect(() => {
     return audioManager.subscribe((playing) => {
       setIsPlayingMusic(playing);
     });
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 80) {
+        setShowScrollIndicator(false);
+      } else {
+        setShowScrollIndicator(true);
+      }
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleScrollDown = () => {
+    window.scrollBy({ top: Math.min(window.innerHeight * 0.75, 520), behavior: 'smooth' });
+  };
 
   const t = translations[lang];
 
@@ -71,6 +88,26 @@ export default function App() {
 
       {/* Language Switcher floating elegantly in the top-right */}
       <LanguageSwitcher currentLang={lang} onLanguageChange={handleLanguageChange} />
+
+      {/* Bottom-left animated scroll down indicator (revealed once opened) */}
+      {isIntroOpen && (
+        <button
+          type="button"
+          onClick={handleScrollDown}
+          className={`fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 bg-white/95 hover:bg-white text-stone-800 py-2.5 px-3.5 sm:py-3 sm:px-4 rounded-full shadow-lg backdrop-blur-md transition-all duration-500 border border-stone-200/80 flex items-center gap-2 select-none active:scale-95 cursor-pointer hover:shadow-xl ${
+            showScrollIndicator ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+          }`}
+          title={t.scrollDown}
+          aria-label={t.scrollDown}
+        >
+          <div className="w-5 h-5 rounded-full bg-[#6e7a63]/20 text-[#6e7a63] flex items-center justify-center">
+            <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
+          </div>
+          <span className="text-[12.5px] sm:text-[13.5px] font-sans font-medium text-stone-800 tracking-wide">
+            {t.scrollDown}
+          </span>
+        </button>
+      )}
 
       {/* Background ambient music button floating in the bottom-right corner (revealed once opened) */}
       {isIntroOpen && (
@@ -154,7 +191,7 @@ export default function App() {
           {/* Heading: Узнали этих ребятишек? */}
           <ScrollReveal animation="fade-up" delay={150} duration={700} className="text-center mt-6 mb-5">
             <h1
-              className="text-[25px] sm:text-[27px] font-medium tracking-normal text-stone-900 leading-tight"
+              className="text-[28px] sm:text-[31px] font-medium tracking-normal text-stone-900 leading-snug"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
             >
               {t.section1.heading}
@@ -163,7 +200,7 @@ export default function App() {
 
           {/* Story prose - Every paragraph reveals with distinct staggered scroll timing */}
           <div
-            className="text-center text-[14.5px] sm:text-[15px] leading-[1.65] text-stone-800 space-y-3.5 max-w-[320px] mx-auto mb-8"
+            className="text-center text-[17px] sm:text-[18px] leading-[1.75] text-stone-900 space-y-4 max-w-[340px] mx-auto mb-9"
             style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
           >
             <ScrollReveal animation="fade-up" delay={200}>
@@ -202,10 +239,10 @@ export default function App() {
           </div>
 
           {/* Wedding Date Pill Announcement */}
-          <div className="text-center space-y-2 mb-8">
+          <div className="text-center space-y-2.5 mb-8">
             <ScrollReveal animation="fade-up" delay={150}>
               <p
-                className="text-[13px] tracking-[0.14em] text-stone-900 uppercase font-medium"
+                className="text-[15px] tracking-[0.16em] text-stone-900 uppercase font-semibold"
                 style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
               >
                 {t.section1.dateLabel}
@@ -214,7 +251,7 @@ export default function App() {
 
             <ScrollReveal animation="pop" delay={250} className="inline-flex items-center justify-center">
               <div
-                className="bg-[#f5efe6] text-stone-900 px-6 py-1.5 rounded-full text-[17px] leading-normal shadow-2xs select-none inline-block border border-stone-200/50"
+                className="bg-[#f5efe6] text-stone-900 px-7 py-2 rounded-full text-[20px] sm:text-[21px] leading-normal shadow-2xs select-none inline-block border border-stone-200/50"
                 style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
               >
                 {t.section1.dateValue}
@@ -223,7 +260,7 @@ export default function App() {
 
             <ScrollReveal animation="fade-up" delay={350}>
               <p
-                className="text-[15.5px] text-stone-900 pt-1"
+                className="text-[18px] sm:text-[19px] text-stone-900 pt-1 font-medium"
                 style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
               >
                 {t.section1.withLove}
@@ -238,7 +275,7 @@ export default function App() {
         </section>
 
         {/* ========================================================= */}
-        {/* SECTION 2: TIMING / ТАЙМИНГ                               */}
+        {/* SECTION 2: TIMING / ВРЕМЯ                                 */}
         {/* ========================================================= */}
         <section className="pt-6 px-6 sm:px-8 border-t border-stone-100/60">
           {/* Couple Portrait */}
@@ -252,10 +289,10 @@ export default function App() {
             </div>
           </ScrollReveal>
 
-          {/* Section Heading: Тайминг */}
+          {/* Section Heading: Время */}
           <ScrollReveal animation="fade-up" delay={100} className="text-center mb-2">
             <h2
-              className="text-[34px] sm:text-[36px] font-normal text-stone-900 tracking-tight"
+              className="text-[38px] sm:text-[42px] font-normal text-stone-900 tracking-tight"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
             >
               {t.timing.title}
@@ -265,7 +302,7 @@ export default function App() {
           {/* Subtitle */}
           <ScrollReveal animation="fade-up" delay={200}>
             <p
-              className="text-center text-[13px] sm:text-[13.5px] text-stone-700 leading-snug max-w-[290px] mx-auto mb-9"
+              className="text-center text-[16px] sm:text-[17px] text-stone-800 leading-relaxed max-w-[320px] mx-auto mb-9"
               style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
             >
               {t.timing.subtitle}
@@ -273,7 +310,7 @@ export default function App() {
           </ScrollReveal>
 
           {/* Timeline: 18:00 */}
-          <div className="max-w-[310px] mx-auto pb-14">
+          <div className="max-w-[320px] mx-auto pb-14">
             <ScrollReveal animation="fade-left" delay={150}>
               <div className="flex items-start gap-5 group cursor-default">
                 <div className="w-11 flex justify-center shrink-0 pt-0.5 transition-transform duration-300 group-hover:scale-110">
@@ -281,13 +318,13 @@ export default function App() {
                 </div>
                 <div className="flex-1">
                   <p
-                    className="text-[17.5px] text-stone-900 font-normal pb-1 border-b border-stone-300 group-hover:border-stone-500 transition-colors"
+                    className="text-[20px] sm:text-[21px] text-stone-900 font-medium pb-1 border-b border-stone-300 group-hover:border-stone-500 transition-colors"
                     style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                   >
                     {t.timing.banquetTime}
                   </p>
                   <p
-                    className="text-[13px] text-stone-600 pt-1.5"
+                    className="text-[15.5px] sm:text-[16px] text-stone-700 pt-1.5 leading-relaxed"
                     style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                   >
                     {t.timing.banquetDesc}
@@ -305,7 +342,7 @@ export default function App() {
           {/* Section Heading: Локация */}
           <ScrollReveal animation="fade-up" className="text-center mb-8">
             <h2
-              className="text-[34px] sm:text-[36px] font-normal text-stone-900 tracking-tight"
+              className="text-[38px] sm:text-[42px] font-normal text-stone-900 tracking-tight"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
             >
               {t.location.title}
@@ -319,13 +356,13 @@ export default function App() {
                   <MapPin className="w-5 h-5" />
                 </div>
                 <p
-                  className="text-[21px] sm:text-[22px] font-medium text-stone-900"
+                  className="text-[24px] sm:text-[26px] font-medium text-stone-900"
                   style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                 >
                   {t.location.venueName}
                 </p>
                 <p
-                  className="text-[14px] sm:text-[14.5px] text-stone-600 mt-0.5 mb-4"
+                  className="text-[16.5px] sm:text-[17.5px] text-stone-700 mt-1 mb-4"
                   style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                 >
                   {t.location.address}
@@ -337,11 +374,11 @@ export default function App() {
                     href={googleMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="py-2.5 px-6 rounded-full border border-[#6e7a63] bg-white hover:bg-[#6e7a63] text-stone-800 hover:text-white text-[13.5px] tracking-[0.08em] uppercase font-medium inline-flex items-center justify-center gap-2 shadow-2xs active:scale-98 cursor-pointer w-full select-none transition-all duration-300"
+                    className="py-3 px-6 rounded-full border border-[#6e7a63] bg-white hover:bg-[#6e7a63] text-stone-800 hover:text-white text-[15px] sm:text-[16px] tracking-[0.08em] uppercase font-medium inline-flex items-center justify-center gap-2 shadow-2xs active:scale-98 cursor-pointer w-full select-none transition-all duration-300"
                     style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                   >
                     <span>{t.location.openMapBtn}</span>
-                    <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+                    <ExternalLink className="w-4 h-4 opacity-80" />
                   </a>
                 </div>
 
@@ -363,11 +400,11 @@ export default function App() {
                     href={yandexMapsUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[13px] text-stone-500 hover:text-stone-800 underline underline-offset-4 cursor-pointer transition-colors inline-flex items-center gap-1"
+                    className="text-[15px] text-stone-600 hover:text-stone-900 underline underline-offset-4 cursor-pointer transition-colors inline-flex items-center gap-1 font-medium"
                     style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                   >
                     <span>{t.location.yandexLink}</span>
-                    <ExternalLink className="w-3 h-3 opacity-60" />
+                    <ExternalLink className="w-3.5 h-3.5 opacity-70" />
                   </a>
                 </div>
               </div>
@@ -381,7 +418,7 @@ export default function App() {
         <section className="pt-6 px-6 sm:px-8 border-t border-stone-100/60 pb-4">
           <ScrollReveal animation="fade-up" className="text-center mb-6">
             <h2
-              className="text-[34px] sm:text-[36px] font-normal text-stone-900 tracking-tight"
+              className="text-[38px] sm:text-[42px] font-normal text-stone-900 tracking-tight"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
             >
               {t.wishes.title}
@@ -389,7 +426,7 @@ export default function App() {
           </ScrollReveal>
 
           <div
-            className="text-center text-[14.5px] sm:text-[15px] leading-[1.65] text-stone-800 space-y-4 max-w-[315px] mx-auto"
+            className="text-center text-[17px] sm:text-[18px] leading-[1.75] text-stone-900 space-y-4 max-w-[340px] mx-auto"
             style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
           >
             <ScrollReveal animation="fade-up" delay={150}>

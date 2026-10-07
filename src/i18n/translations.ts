@@ -93,10 +93,12 @@ export interface Translations {
     musicHint: string;
     skip: string;
   };
+  scrollDown: string;
 }
 
 export const translations: Record<Language, Translations> = {
   ru: {
+    scrollDown: 'Листайте вниз',
     intro: {
       title: 'Пригласительное от Манаса и Мерей...',
       date: '22 октября 2026',
@@ -130,7 +132,7 @@ export const translations: Record<Language, Translations> = {
       drawnCoupleAlt: 'Нарисованная пара — Манас и Мерей',
     },
     timing: {
-      title: 'Тайминг',
+      title: 'Время',
       subtitle: 'Будем счастливы разделить этот праздничный вечер вместе с вами!',
       banquetTime: '— 18:00 Начало банкета',
       banquetDesc: 'Tinchlik Plaza, танцы, веселье и любовь',
@@ -192,6 +194,7 @@ export const translations: Record<Language, Translations> = {
   },
 
   kz: {
+    scrollDown: 'Төмен сырғытыңыз',
     intro: {
       title: 'Манас пен Мерейден шақыру...',
       date: '22 қазан 2026',
@@ -225,7 +228,7 @@ export const translations: Record<Language, Translations> = {
       drawnCoupleAlt: 'Суреттелген жұп — Манас пен Мерей',
     },
     timing: {
-      title: 'Тайминг',
+      title: 'Уақыты',
       subtitle: 'Бұл мерекелік кешті сіздермен бірге өткізуге шын жүректен қуаныштымыз!',
       banquetTime: '— 18:00 Тойдың басталуы',
       banquetDesc: 'Tinchlik Plaza, би, шаттық пен махаббат',
@@ -287,6 +290,7 @@ export const translations: Record<Language, Translations> = {
   },
 
   uz: {
+    scrollDown: 'Pastga suring',
     intro: {
       title: 'Manas va Mereydan taklifnoma...',
       date: '22 oktyabr 2026',
@@ -320,7 +324,7 @@ export const translations: Record<Language, Translations> = {
       drawnCoupleAlt: 'Chizilgan juftlik — Manas va Merey',
     },
     timing: {
-      title: 'Dastur',
+      title: 'Vaqti',
       subtitle: 'Ushbu bayram oqshomini siz bilan birga o‘tkazishdan baxtiyormiz!',
       banquetTime: '— 18:00 To‘y oqshomi boshlanishi',
       banquetDesc: 'Tinchlik Plaza, raqslar, quvonch va muhabbat',

@@ -102,7 +102,7 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
       >
         {/* Title above */}
         <h1
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-stone-900 font-medium tracking-normal leading-tight select-none px-4"
+          className="text-[27px] sm:text-[32px] md:text-4xl lg:text-5xl text-stone-900 font-medium tracking-normal leading-tight select-none px-4"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
         >
           {t.title}
@@ -117,7 +117,7 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
             id="open-invitation-btn"
             type="button"
             onClick={handleOpen}
-            className="px-10 py-3.5 rounded-full bg-[#222222] hover:bg-black text-[#f7f6f2] text-base sm:text-lg font-serif-clean shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-95 border border-stone-800 tracking-wide font-medium"
+            className="px-11 py-4 rounded-full bg-[#222222] hover:bg-black text-[#f7f6f2] text-lg sm:text-xl font-serif-clean shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-95 border border-stone-800 tracking-wide font-medium"
           >
             {t.openBtn}
           </button>

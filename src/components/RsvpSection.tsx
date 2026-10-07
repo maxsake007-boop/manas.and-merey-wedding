@@ -83,7 +83,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
       {/* Heading */}
       <ScrollReveal animation="fade-up" delay={200}>
         <h2
-          className="text-[26px] sm:text-[28px] leading-[1.25] text-stone-900 mb-4"
+          className="text-[28px] sm:text-[32px] leading-[1.3] text-stone-900 mb-4"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
         >
           {t.title1}
@@ -95,12 +95,12 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
       {/* Subtitle */}
       <ScrollReveal animation="fade-up" delay={300}>
         <div
-          className="text-[13.5px] sm:text-[14px] leading-relaxed text-stone-800 space-y-1 mb-8"
+          className="text-[15.5px] sm:text-[16.5px] leading-relaxed text-stone-800 space-y-1.5 mb-8"
           style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
         >
           <p>{t.subtitle1}</p>
           <p>{t.subtitle2}</p>
-          <p className="pt-0.5">{t.deadline}</p>
+          <p className="pt-0.5 font-medium">{t.deadline}</p>
         </div>
       </ScrollReveal>
 
@@ -109,13 +109,13 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
           <div className="bg-[#f7f5f0] border border-stone-200/80 rounded-2xl p-6 text-center shadow-xs">
             <CheckCircle2 className="w-10 h-10 text-[#6e7a63] mx-auto mb-3 animate-bounce" />
             <h3
-              className="text-2xl text-stone-900 mb-1"
+              className="text-[26px] sm:text-[28px] text-stone-900 mb-2"
               style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
             >
               {t.thankYouTitle}
             </h3>
             <p
-              className="text-[14.5px] text-stone-700 mb-4"
+              className="text-[16.5px] sm:text-[17.5px] text-stone-800 mb-4 leading-relaxed"
               style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
             >
               {isDeclined ? t.thankYouDeclined(names) : t.thankYouAccepted(names)}
@@ -124,9 +124,9 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
             <button
               type="button"
               onClick={handleEdit}
-              className="inline-flex items-center gap-1.5 text-xs text-stone-500 hover:text-stone-800 transition-colors py-1.5 px-3 rounded-lg hover:bg-stone-200/60 cursor-pointer"
+              className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-800 transition-colors py-1.5 px-3.5 rounded-lg hover:bg-stone-200/60 cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5" />
+              <RotateCcw className="w-4 h-4" />
               <span>{t.editResponseBtn}</span>
             </button>
           </div>
@@ -137,7 +137,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
           <ScrollReveal animation="fade-left" delay={350}>
             <div>
               <label
-                className="block text-[15.5px] font-semibold text-stone-900 mb-3.5"
+                className="block text-[17.5px] font-semibold text-stone-900 mb-3.5"
                 style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
               >
                 {t.attendanceLabel}
@@ -160,7 +160,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
                         className="custom-radio shrink-0"
                       />
                       <span
-                        className="text-[15.5px] text-stone-900 group-hover:text-stone-700 transition-colors"
+                        className="text-[17px] sm:text-[18px] text-stone-900 group-hover:text-stone-700 transition-colors"
                         style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
                       >
                         {opt}
@@ -177,13 +177,13 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
             <div>
               <label
                 htmlFor="guest-name"
-                className="block text-[15.5px] font-semibold text-stone-900 mb-1"
+                className="block text-[17.5px] font-semibold text-stone-900 mb-1"
                 style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
               >
                 {t.nameLabel}
               </label>
 
-              <p className="text-[11.5px] leading-snug text-stone-500 mb-3">
+              <p className="text-[13px] sm:text-[13.5px] leading-snug text-stone-600 mb-3">
                 {t.nameHelp}
               </p>
 
@@ -196,12 +196,12 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
                   if (error) setError(null);
                 }}
                 placeholder={t.namePlaceholder}
-                className="w-full pb-2 pt-1 text-[16px] text-stone-900 placeholder:text-stone-400 input-underline focus:border-stone-900"
+                className="w-full pb-2.5 pt-1.5 text-[17px] sm:text-[18px] text-stone-900 placeholder:text-stone-400 input-underline focus:border-stone-900"
                 style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
               />
 
               {error && (
-                <p className="text-xs text-rose-600 mt-1.5 animate-in fade-in duration-150">
+                <p className="text-sm text-rose-600 mt-1.5 animate-in fade-in duration-150">
                   {error}
                 </p>
               )}
@@ -213,7 +213,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3.5 px-8 rounded-full btn-olive text-[16.5px] font-normal tracking-wide shadow-xs active:scale-[0.99] transition-all cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full py-4 px-8 rounded-full btn-olive text-[18px] sm:text-[19px] font-medium tracking-wide shadow-xs active:scale-[0.99] transition-all cursor-pointer disabled:opacity-75 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               style={{ fontFamily: "'EB Garamond', Georgia, serif" }}
             >
               {isSubmitting ? (

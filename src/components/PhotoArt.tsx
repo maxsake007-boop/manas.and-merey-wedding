@@ -47,7 +47,7 @@ export const PhotoFrame: React.FC<PhotoProps> = ({
       {caption && (
         <div className="pt-2 pb-0.5 text-center">
           <span
-            className="text-stone-900 text-[18px] sm:text-[19px] font-semibold leading-none select-none tracking-normal inline-block opacity-90"
+            className="text-stone-900 text-[21px] sm:text-[23px] font-semibold leading-none select-none tracking-normal inline-block opacity-90"
             style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
           >
             {caption}
