@@ -1,47 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Music, ChevronDown } from 'lucide-react';
 import { audioManager } from '../services/audioManager';
 
 interface HandDrawnAirplaneIntroProps {
   t: {
     title: string;
-    date: string;
     openBtn: string;
-    musicHint: string;
-    skip: string;
   };
   onOpen: () => void;
 }
 
-// Exact Catmull-Rom cubic Bézier path reconstructed from user's sketch (media_1791380067444.png)
-// in 1024x682 coordinate space: entry from lower-left -> full 360° center loop -> exit to top-right
+// Full 360° acrobatic loop-the-loop trajectory reconstructed from user's sketch
+// Starts right at centered airplane position (512, 341) in 1024x682 space
 const TRAJECTORY_PATH =
-  'M 319.6 493.5 C 323.1 492.5, 333.8 489.6, 340.8 487.7 C 347.8 485.8, 354.7 484.2, 361.8 482.2 C 368.9 480.2, 376.1 478.0, 383.3 475.7 C 390.5 473.4, 397.9 471.0, 405.2 468.5 C 412.5 466.0, 419.8 463.4, 427.0 460.5 C 434.2 457.6, 441.6 454.6, 448.7 451.2 C 455.8 447.8, 462.9 444.1, 469.8 440.1 C 476.7 436.1, 488.9 433.1, 490.3 427.2 C 491.7 421.3, 483.0 409.9, 478.0 404.8 C 473.0 399.7, 465.8 400.0, 460.2 396.7 C 454.6 393.4, 449.4 389.8, 444.6 385.0 C 439.8 380.2, 434.9 374.4, 431.4 368.1 C 427.9 361.8, 424.7 354.6, 423.5 347.2 C 422.3 339.8, 422.3 331.3, 424.1 323.9 C 425.9 316.5, 429.6 308.9, 434.1 302.8 C 438.6 296.8, 444.7 291.6, 451.0 287.6 C 457.3 283.6, 464.5 280.6, 471.7 279.0 C 478.9 277.4, 486.9 276.7, 494.2 277.7 C 501.5 278.7, 508.9 281.3, 515.3 285.1 C 521.7 288.9, 528.2 294.2, 532.6 300.3 C 537.0 306.4, 539.9 314.3, 541.8 321.9 C 543.6 329.5, 544.2 337.8, 543.7 345.7 C 543.2 353.6, 541.3 361.7, 538.5 369.3 C 535.7 376.9, 531.2 384.3, 527.0 391.2 C 522.8 398.1, 511.4 407.8, 513.1 410.8 C 514.9 413.8, 529.5 410.3, 537.5 409.2 C 545.5 408.1, 553.1 406.3, 560.8 404.4 C 568.5 402.4, 576.1 400.1, 583.7 397.5 C 591.3 394.9, 598.7 391.9, 606.3 388.6 C 613.9 385.3, 621.7 381.5, 629.1 377.7 C 636.5 373.9, 643.7 369.9, 650.9 365.6 C 658.1 361.3, 665.4 356.7, 672.4 352.1 C 679.4 347.5, 686.2 342.8, 693.1 337.8 C 700.0 332.9, 706.9 327.6, 713.6 322.4 C 720.3 317.2, 726.8 311.8, 733.3 306.4 C 739.8 300.9, 746.0 295.3, 752.3 289.7 C 758.5 284.1, 764.7 278.6, 770.8 272.9 C 776.9 267.2, 782.9 261.4, 788.8 255.7 C 794.6 249.9, 800.3 244.3, 805.9 238.4 C 811.5 232.5, 817.0 226.6, 822.5 220.5 C 828.0 214.4, 833.7 208.3, 839.2 202.0 C 844.8 195.7, 850.6 188.9, 855.8 182.5 C 861.0 176.1, 865.8 169.9, 870.6 163.8 C 875.4 157.7, 873.1 159.7, 884.7 145.7 C 896.3 131.7, 912.5 111.0, 940.0 80.0 C 967.5 49.0, 1031.7 -20.0, 1050.0 -40.0';
+  'M 512.0 341.0 C 515.8 340.4, 527.4 338.8, 535.1 337.3 C 542.7 335.7, 550.4 333.9, 557.9 331.6 C 565.4 329.4, 572.8 326.8, 580.0 323.8 C 587.2 320.8, 594.3 317.4, 601.1 313.5 C 607.9 309.6, 614.5 305.3, 620.7 300.4 C 627.0 295.6, 633.1 290.2, 638.5 284.4 C 643.9 278.6, 649.1 272.3, 653.3 265.7 C 657.5 259.1, 661.2 252.0, 663.8 244.7 C 666.4 237.3, 668.1 229.6, 668.9 221.8 C 669.6 214.0, 669.4 205.9, 668.2 198.1 C 667.0 190.2, 664.8 182.2, 661.6 174.7 C 658.5 167.2, 654.2 159.6, 649.2 153.0 C 644.3 146.3, 638.3 139.8, 632.1 134.6 C 625.8 129.4, 618.7 124.7, 611.6 121.6 C 604.4 118.5, 596.7 116.4, 589.2 115.9 C 581.7 115.5, 573.9 116.7, 566.5 118.8 C 559.1 121.0, 551.6 124.7, 544.6 128.9 C 537.7 133.2, 530.9 138.6, 524.8 144.4 C 518.8 150.1, 513.1 156.6, 508.4 163.2 C 503.6 169.8, 499.5 176.8, 496.1 184.0 C 492.8 191.2, 490.2 198.7, 488.4 206.3 C 486.5 213.9, 485.4 221.7, 485.0 229.7 C 484.7 237.6, 485.0 245.9, 486.2 254.0 C 487.3 262.0, 489.2 270.4, 491.8 278.0 C 494.4 285.7, 497.8 293.3, 501.9 300.0 C 506.0 306.7, 510.9 313.0, 516.5 318.0 C 522.2 323.1, 528.7 327.2, 535.6 330.5 C 542.5 333.8, 550.2 336.0, 557.9 337.7 C 565.7 339.4, 574.0 340.2, 582.2 340.7 C 590.3 341.3, 598.7 341.1, 606.8 340.8 C 614.9 340.4, 622.9 339.6, 630.8 338.6 C 638.7 337.5, 646.5 336.1, 654.1 334.4 C 661.8 332.6, 669.3 330.6, 676.7 328.3 C 684.2 326.0, 691.5 323.3, 698.7 320.5 C 705.8 317.6, 712.9 314.4, 719.9 311.1 C 726.8 307.7, 733.6 304.1, 740.4 300.2 C 747.1 296.4, 753.7 292.4, 760.2 288.2 C 766.8 284.0, 773.2 279.6, 779.6 275.1 C 786.0 270.6, 792.3 265.9, 798.5 261.1 C 804.7 256.4, 810.9 251.5, 817.1 246.6 C 823.2 241.7, 829.3 236.6, 835.4 231.6 C 841.5 226.6, 847.5 221.5, 853.5 216.4 C 859.6 211.4, 865.6 206.3, 871.6 201.2 C 877.6 196.2, 883.6 191.1, 889.6 186.1 C 895.6 181.0, 901.6 176.0, 907.6 170.9 C 913.6 165.9, 919.5 160.8, 925.5 155.8 C 931.4 150.7, 937.3 145.7, 943.2 140.6 C 949.1 135.5, 955.0 130.4, 960.9 125.3 C 966.7 120.1, 972.6 115.0, 978.4 109.8 C 984.2 104.6, 989.9 99.4, 995.7 94.2 C 1001.4 89.0, 1007.1 83.7, 1012.8 78.4 C 1018.4 73.1, 1024.1 67.8, 1029.6 62.4 C 1035.2 57.0, 1040.8 51.6, 1046.3 46.1 C 1051.8 40.6, 1057.3 35.1, 1062.7 29.5 C 1068.1 24.0, 1073.5 18.3, 1078.8 12.6 C 1084.1 6.9, 1089.4 1.2, 1094.6 -4.6 C 1099.8 -10.5, 1105.0 -16.4, 1110.1 -22.3 C 1115.2 -28.3, 1120.2 -34.3, 1125.2 -40.4 C 1130.2 -46.5, 1137.5 -55.9, 1140.0 -59.0';
 
-// Smooth acceleration & glide easing
-function easeInOutCubic(x: number): number {
-  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+// Smooth acceleration and cruising ease
+function easeFlight(x: number): number {
+  return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
 }
 
 export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ t, onOpen }) => {
   const [isFlying, setIsFlying] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
-
-  // Flight progress: 0 to 1
   const [progress, setProgress] = useState(0);
 
-  // SVG Path & track measurement
   const pathRef = useRef<SVGPathElement>(null);
-  const [pathLength, setPathLength] = useState(1300);
+  const [pathLength, setPathLength] = useState(1400);
 
-  // Real-time coordinates of plane during flight
+  // Airplane coordinates & orientation (nose aligned with flight path)
   const [planeTransform, setPlaneTransform] = useState<{ x: number; y: number; angle: number }>({
-    x: 319.6,
-    y: 493.5,
-    angle: 0,
+    x: 512.0,
+    y: 341.0,
+    angle: 13.5, // initial tilt at rest
   });
 
-  // Calculate actual SVG path length on mount
   useEffect(() => {
     if (pathRef.current) {
       const len = pathRef.current.getTotalLength();
@@ -51,23 +43,22 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
     }
   }, []);
 
-  // Handle clicking "Открыть"
   const handleOpen = () => {
     if (isFlying) return;
 
-    // 1. Immediately play audio on user gesture
+    // 1. Play music immediately on user click gesture
     audioManager.tryPlay();
 
-    // 2. Start plane animation & hide text
+    // 2. Start plane animation & hide text/button
     setIsFlying(true);
 
     const startTime = performance.now();
-    const flightDuration = 1800; // ms for full loop-the-loop and flight offscreen
+    const flightDuration = 2400; // ms for full visible loop-the-loop and sky ascent
 
     const animateFlight = (now: number) => {
       const elapsed = now - startTime;
       const rawProgress = Math.min(elapsed / flightDuration, 1);
-      const eased = easeInOutCubic(rawProgress);
+      const eased = easeFlight(rawProgress);
 
       setProgress(eased);
 
@@ -75,10 +66,11 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
         const len = pathRef.current.getTotalLength();
         const currentLen = eased * len;
         const pt = pathRef.current.getPointAtLength(currentLen);
-        const nextPt = pathRef.current.getPointAtLength(Math.min(currentLen + 8, len));
-        const tangentDeg = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
+        const nextPt = pathRef.current.getPointAtLength(Math.min(currentLen + 4, len));
+        const prevPt = pathRef.current.getPointAtLength(Math.max(currentLen - 4, 0));
+        const tangentDeg = Math.atan2(nextPt.y - prevPt.y, nextPt.x - prevPt.x) * (180 / Math.PI);
 
-        // Plane image axis is at -25.3°, so offset by +25.3° to align nose with tangent
+        // Plane image nose is at -25.3°, so +25.3° aligns nose with tangent
         setPlaneTransform({
           x: pt.x,
           y: pt.y,
@@ -89,164 +81,117 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
       if (rawProgress < 1) {
         requestAnimationFrame(animateFlight);
       } else {
-        // Flight completed: fade out screen
+        // Plane is offscreen: dissolve intro screen smoothly
         setIsFadingOut(true);
         setTimeout(() => {
           onOpen();
-        }, 500);
+        }, 400);
       }
     };
 
     requestAnimationFrame(animateFlight);
   };
 
-  const handleSkip = () => {
-    audioManager.tryPlay();
-    setIsFadingOut(true);
-    setTimeout(() => {
-      onOpen();
-    }, 300);
-  };
-
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col items-center justify-between select-none overflow-hidden transition-all duration-600 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center select-none overflow-hidden transition-all duration-500 ${
         isFadingOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
       }`}
       style={{
         backgroundColor: '#f7f6f2',
       }}
     >
-      {/* Skip Button (Bottom Right) */}
-      <button
-        id="airplane-skip-btn"
-        onClick={handleSkip}
-        type="button"
-        className="absolute bottom-6 right-6 sm:bottom-8 sm:right-8 z-40 text-xs sm:text-sm tracking-wider uppercase font-serif-clean text-stone-500 hover:text-stone-800 transition-colors px-3.5 py-1.5 rounded-full border border-stone-300/80 hover:border-stone-400 bg-white/70 backdrop-blur-md cursor-pointer shadow-xs active:scale-95"
+      {/* FULLSCREEN SVG CANVAS: Trajectory & Airplane (Responsive 1024x682 space) */}
+      <svg
+        className="fixed inset-0 w-full h-full pointer-events-none overflow-visible"
+        viewBox="0 0 1024 682"
+        preserveAspectRatio="xMidYMid meet"
       >
-        {t.skip} →
-      </button>
+        <defs>
+          {/* Mask to reveal dotted trajectory behind plane as it executes the loop */}
+          <mask id="trail-reveal-mask">
+            <path
+              d={TRAJECTORY_PATH}
+              fill="none"
+              stroke="#ffffff"
+              strokeWidth="70"
+              strokeDasharray={pathLength}
+              strokeDashoffset={pathLength * (1 - progress)}
+              strokeLinecap="round"
+            />
+          </mask>
+        </defs>
 
-      {/* TOP HEADER: Title & Date (fades out when launching) */}
+        {/* Reference path for calculation */}
+        <path ref={pathRef} d={TRAJECTORY_PATH} fill="none" stroke="none" />
+
+        {/* Hand-drawn dotted trajectory matching user's sketch */}
+        <path
+          d={TRAJECTORY_PATH}
+          fill="none"
+          stroke="#262626"
+          strokeWidth="4"
+          strokeDasharray="4 14"
+          strokeLinecap="round"
+          mask="url(#trail-reveal-mask)"
+          opacity={isFlying ? 0.85 : 0}
+          style={{
+            transition: 'opacity 0.2s ease',
+          }}
+        />
+
+        {/* Paper Airplane: rendered directly in SVG coordinate space for zero jumping */}
+        <g
+          transform={`translate(${planeTransform.x}, ${planeTransform.y}) rotate(${planeTransform.angle})`}
+          className="pointer-events-auto cursor-pointer"
+          onClick={handleOpen}
+        >
+          {/* Large, impressive plane image: 260x176 in 1024x682 space */}
+          <image
+            href="/paper-plane.png"
+            x="-130"
+            y="-88"
+            width="260"
+            height="176"
+            style={{
+              filter: 'drop-shadow(2px 8px 18px rgba(0,0,0,0.22))',
+            }}
+          />
+        </g>
+      </svg>
+
+      {/* CENTERED STACK: Title directly above plane -> plane click area -> Button directly below */}
       <div
-        className={`w-full text-center pt-16 sm:pt-20 px-6 transition-all duration-400 ${
-          isFlying ? 'opacity-0 -translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0'
+        className={`relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-xl transition-all duration-300 ${
+          isFlying ? 'opacity-0 -translate-y-3 pointer-events-none' : 'opacity-100 translate-y-0'
         }`}
       >
+        {/* Title directly above the plane */}
         <h1
-          className="text-2xl sm:text-3xl md:text-4xl text-stone-900 font-medium tracking-normal leading-tight"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-stone-900 font-medium tracking-normal leading-tight select-none mb-0"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
         >
           {t.title}
         </h1>
-        <p
-          className="text-stone-500 text-xs sm:text-sm mt-2 tracking-widest uppercase font-serif-clean"
-        >
-          {t.date}
-        </p>
-      </div>
 
-      {/* CENTER STAGE: SVG Canvas with flight path & plane */}
-      <div className="relative w-full max-w-4xl h-[340px] sm:h-[420px] md:h-[480px] my-auto flex items-center justify-center">
-        {/* Full-screen responsive flight vector coordinate system (1024x682 matching sketch) */}
-        <svg
-          className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-          viewBox="0 0 1024 682"
-          preserveAspectRatio="xMidYMid meet"
-        >
-          <defs>
-            {/* Mask to reveal dotted trajectory behind plane as it flies */}
-            <mask id="trail-reveal-mask">
-              <path
-                d={TRAJECTORY_PATH}
-                fill="none"
-                stroke="#ffffff"
-                strokeWidth="50"
-                strokeDasharray={pathLength}
-                strokeDashoffset={pathLength * (1 - progress)}
-                strokeLinecap="round"
-              />
-            </mask>
-          </defs>
-
-          {/* Reference path for length computation */}
-          <path ref={pathRef} d={TRAJECTORY_PATH} fill="none" stroke="none" />
-
-          {/* Hand-drawn dotted trajectory (appears right behind the plane) */}
-          <path
-            d={TRAJECTORY_PATH}
-            fill="none"
-            stroke="#222222"
-            strokeWidth="4"
-            strokeDasharray="4 15"
-            strokeLinecap="round"
-            mask="url(#trail-reveal-mask)"
-            opacity={isFlying ? 0.85 : 0}
-            style={{
-              transition: 'opacity 0.2s ease',
-            }}
-          />
-
-          {/* The Flying Plane (Rendered directly in SVG during flight for 100% precision) */}
-          {isFlying && (
-            <g
-              transform={`translate(${planeTransform.x}, ${planeTransform.y}) rotate(${planeTransform.angle})`}
-            >
-              {/* Centered paper plane image */}
-              <image
-                href="/paper-plane.png"
-                x="-55"
-                y="-37"
-                width="110"
-                height="74"
-                style={{
-                  filter: 'drop-shadow(2px 6px 12px rgba(0,0,0,0.18))',
-                }}
-              />
-            </g>
-          )}
-        </svg>
-
-        {/* Initial Static / Floating Plane (before flight starts) */}
-        {!isFlying && (
-          <div
-            onClick={handleOpen}
-            className="relative cursor-pointer group flex flex-col items-center justify-center"
-            title={t.openBtn}
-          >
-            {/* Plane with gentle floating sway */}
-            <div className="transition-transform duration-300 hover:scale-105 active:scale-95 animate-plane-hover">
-              <img
-                src="/paper-plane.png"
-                alt="Бумажный самолётик"
-                className="w-36 sm:w-44 md:w-52 h-auto select-none pointer-events-none drop-shadow-md"
-              />
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* BOTTOM SECTION: "Открыть" Button (fades out when launching) */}
-      <div
-        className={`w-full flex flex-col items-center justify-center pb-14 sm:pb-16 px-6 transition-all duration-400 ${
-          isFlying ? 'opacity-0 translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0'
-        }`}
-      >
-        <button
-          id="open-invitation-btn"
-          type="button"
+        {/* Airplane spatial spacer (centered directly over the SVG plane, clickable) */}
+        <div
+          className="w-64 sm:w-72 md:w-80 h-28 sm:h-32 md:h-36 cursor-pointer pointer-events-auto"
           onClick={handleOpen}
-          className="group relative flex items-center justify-center gap-2 px-9 py-3 sm:py-3.5 rounded-full bg-[#222222] hover:bg-black text-[#f7f6f2] text-base sm:text-lg font-serif-clean shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-95 border border-stone-800"
-        >
-          <span className="font-medium tracking-wide">{t.openBtn}</span>
-          <Music className="w-4 h-4 text-stone-300 group-hover:scale-110 transition-transform ml-0.5" />
-        </button>
+          title={t.openBtn}
+        />
 
-        <p className="text-[12px] text-stone-500 font-serif-clean tracking-wider flex items-center gap-1 mt-2.5">
-          <ChevronDown className="w-3.5 h-3.5 animate-bounce text-stone-400" />
-          <span>{t.musicHint}</span>
-          <ChevronDown className="w-3.5 h-3.5 animate-bounce text-stone-400" />
-        </p>
+        {/* Button directly below the plane, slightly down */}
+        <div className="mt-2 sm:mt-3 pointer-events-auto">
+          <button
+            id="open-invitation-btn"
+            type="button"
+            onClick={handleOpen}
+            className="px-10 py-3.5 rounded-full bg-[#222222] hover:bg-black text-[#f7f6f2] text-base sm:text-lg font-serif-clean shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer active:scale-95 border border-stone-800 tracking-wide font-medium"
+          >
+            {t.openBtn}
+          </button>
+        </div>
       </div>
     </div>
   );
