@@ -12,6 +12,7 @@ interface HandDrawnAirplaneIntroProps {
 
 export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ t, onOpen }) => {
   const [isFlying, setIsFlying] = useState(false);
+  const [isContentFading, setIsContentFading] = useState(false);
   const [isFadingOut, setIsFadingOut] = useState(false);
 
   const lottieContainerRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,16 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
 
       animRef.current = anim;
 
-      // When the Lottie airplane finishes its 360° loop and flies off-screen:
+      // As the airplane finishes its loop and accelerates towards right exit (frame 48 out of 63, ~1.6s):
+      // smoothly fade out the title and button right as the airplane is about to fly out of frame!
+      anim.addEventListener('enterFrame', (e: any) => {
+        const frame = e && typeof e.currentTime === 'number' ? e.currentTime : anim.currentFrame;
+        if (frame >= 48) {
+          setIsContentFading(true);
+        }
+      });
+
+      // When the Lottie airplane finishes its flight and exits the screen:
       anim.addEventListener('complete', () => {
         setIsFadingOut(true);
         setTimeout(() => {
@@ -53,17 +63,23 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
     // 1. Play background music immediately on click
     audioManager.tryPlay();
 
-    // 2. Hide static UI and play the Lottie animation
+    // 2. Start the airplane flight animation
     setIsFlying(true);
+    setIsContentFading(false);
 
     if (animRef.current) {
       animRef.current.goToAndPlay(0, true);
     }
+
+    // Safety fallback timer for content fade-out in case enterFrame doesn't fire
+    setTimeout(() => {
+      setIsContentFading(true);
+    }, 1650);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center select-none overflow-hidden transition-all duration-500 ${
+      className={`fixed inset-0 z-50 flex items-center justify-center select-none overflow-hidden transition-all duration-700 ${
         isFadingOut ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
       }`}
       style={{
@@ -78,37 +94,25 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
         }`}
       />
 
-      {/* Centered Resting State: Title directly above -> Large plane -> Button directly below */}
+      {/* Centered Resting State: Title at top, space in middle for airplane flight, Button directly below */}
       <div
-        className={`relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-xl transition-all duration-300 ${
-          isFlying ? 'opacity-0 -translate-y-4 pointer-events-none' : 'opacity-100 translate-y-0'
+        className={`relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-xl transition-all duration-700 ease-out ${
+          isContentFading ? 'opacity-0 -translate-y-3 pointer-events-none' : 'opacity-100 translate-y-0'
         }`}
       >
-        {/* Title directly above the plane */}
+        {/* Title above */}
         <h1
-          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-stone-900 font-medium tracking-normal leading-tight select-none mb-3 sm:mb-4"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-stone-900 font-medium tracking-normal leading-tight select-none px-4"
           style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontStyle: 'italic' }}
         >
           {t.title}
         </h1>
 
-        {/* Paper Plane in the center, enlarged, clickable */}
-        <div
-          onClick={handleOpen}
-          className="cursor-pointer group flex flex-col items-center justify-center my-1 sm:my-2"
-          title={t.openBtn}
-        >
-          <div className="transition-transform duration-300 hover:scale-105 active:scale-95">
-            <img
-              src="/paper-plane.png"
-              alt="Самолётик"
-              className="w-56 sm:w-64 md:w-72 lg:w-80 h-auto select-none pointer-events-none drop-shadow-md"
-            />
-          </div>
-        </div>
+        {/* Space between title and button where the airplane swoops and loops */}
+        <div className="h-44 sm:h-52 md:h-60 w-full pointer-events-none" />
 
-        {/* Button directly below the plane, slightly down */}
-        <div className="mt-3 sm:mt-4">
+        {/* Button directly below the space */}
+        <div>
           <button
             id="open-invitation-btn"
             type="button"
