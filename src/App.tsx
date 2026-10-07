@@ -141,25 +141,23 @@ export default function App() {
         {/* ========================================================= */}
         <section className="pt-8 px-6 sm:px-8">
           
-          {/* Top row: Left polaroid (Мерей) + Daisy doodle */}
+          {/* Top row: Left polaroid (Манас) + Car doodle */}
           <div className="flex items-start justify-between mb-8 pl-1 pr-4">
-            {/* Top Polaroid: Мерей */}
+            {/* Top Polaroid: Манас */}
             <ScrollReveal animation="polaroid-left" delay={100} duration={800}>
               <div className="w-[140px] sm:w-[146px] polaroid-card rounded-[2px]">
                 <PhotoFrame
-                  id="merey"
-                  caption={t.section1.captionMerey}
+                  id="manas"
+                  caption={t.section1.captionManas}
                   aspectRatio="aspect-[4/5]"
-                  altText={t.section1.photoMereyAlt}
+                  altText={t.section1.photoManasAlt}
                 />
               </div>
             </ScrollReveal>
 
-            {/* Daisy Doodle with bloom animation on scroll */}
-            <ScrollReveal animation="bloom" delay={250} duration={850} className="pt-12 sm:pt-14 pr-5 sm:pr-7">
-              <div className="relative -left-3 top-2">
-                <DaisyDoodle className="w-16 h-16 sm:w-18 sm:h-18 cursor-pointer" />
-              </div>
+            {/* Blue Car Doodle with drive-in animation on scroll */}
+            <ScrollReveal animation="drive" delay={250} duration={850} className="pt-10 sm:pt-12 pr-1 sm:pr-3">
+              <CarDoodle className="w-26 sm:w-30 h-auto cursor-pointer" />
             </ScrollReveal>
           </div>
 
@@ -168,21 +166,23 @@ export default function App() {
             <HeartFormulaDoodle />
           </ScrollReveal>
 
-          {/* Lower row: Car doodle + Right polaroid (Манас) */}
+          {/* Lower row: Daisy doodle + Right polaroid (Мерей) */}
           <div className="flex items-center justify-between mb-10 pl-2 pr-1">
-            {/* Blue Car Doodle with drive-in animation on scroll */}
-            <ScrollReveal animation="drive" delay={200} duration={850} className="pt-3">
-              <CarDoodle className="w-28 sm:w-32 h-auto cursor-pointer" />
+            {/* Daisy Doodle with bloom animation on scroll */}
+            <ScrollReveal animation="bloom" delay={200} duration={850} className="pt-2 pl-3 sm:pl-5">
+              <div className="relative -left-1">
+                <DaisyDoodle className="w-16 h-16 sm:w-18 sm:h-18 cursor-pointer" />
+              </div>
             </ScrollReveal>
 
-            {/* Bottom Polaroid: Манас */}
+            {/* Bottom Polaroid: Мерей */}
             <ScrollReveal animation="polaroid-right" delay={300} duration={800} className="mr-3 sm:mr-4">
               <div className="w-[140px] sm:w-[146px] polaroid-card rounded-[2px] relative -left-1 sm:-left-2">
                 <PhotoFrame
-                  id="manas"
-                  caption={t.section1.captionManas}
+                  id="merey"
+                  caption={t.section1.captionMerey}
                   aspectRatio="aspect-[4/5]"
-                  altText={t.section1.photoManasAlt}
+                  altText={t.section1.photoMereyAlt}
                 />
               </div>
             </ScrollReveal>
@@ -448,16 +448,11 @@ export default function App() {
             <ScrollReveal animation="fade-up" delay={250}>
               <p>
                 {t.wishes.p2_1}
-                <br />
-                {t.wishes.p2_2}
-                <br />
-                {t.wishes.p2_3}
-                <br />
-                {t.wishes.p2_4}
-                <br />
-                {t.wishes.p2_5}
-                <br />
-                {t.wishes.p2_6}
+                {t.wishes.p2_2 && <><br />{t.wishes.p2_2}</>}
+                {t.wishes.p2_3 && <><br />{t.wishes.p2_3}</>}
+                {t.wishes.p2_4 && <><br />{t.wishes.p2_4}</>}
+                {t.wishes.p2_5 && <><br />{t.wishes.p2_5}</>}
+                {t.wishes.p2_6 && <><br />{t.wishes.p2_6}</>}
               </p>
             </ScrollReveal>
           </div>
