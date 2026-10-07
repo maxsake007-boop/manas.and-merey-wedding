@@ -7,7 +7,8 @@ export interface RsvpPayload {
 export async function sendRsvp(payload: RsvpPayload): Promise<{ success: boolean; message?: string }> {
   const token = import.meta.env.VITE_TELEGRAM_BOT_TOKEN;
   const chatId = import.meta.env.VITE_TELEGRAM_CHAT_ID;
-  const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL;
+  const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwwr5QfwrWTSzOWB6utAW_JokEUJVusq9DM-6Iodrm41e6e7sbKjhMeNPBRJ2B0-yI/exec';
+  const sheetsUrl = import.meta.env.VITE_GOOGLE_SHEETS_URL || DEFAULT_SHEETS_URL;
 
   let telegramSent = false;
   let sheetsSent = false;
@@ -46,7 +47,7 @@ export async function sendRsvp(payload: RsvpPayload): Promise<{ success: boolean
       await fetch(sheetsUrl, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),
       });
       sheetsSent = true;
