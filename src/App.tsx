@@ -19,6 +19,8 @@ import { LanguageSwitcher } from './components/LanguageSwitcher';
 import { Language, translations } from './i18n/translations';
 import { Volume2, VolumeX, ExternalLink, MapPin } from 'lucide-react';
 
+import { audioManager } from './services/audioManager';
+
 const yandexMapsUrl = 'https://yandex.ru/maps/org/tinchlik_plaza/11816632627?si=azm5gkzchh91458fvjetknjg1c';
 const googleMapsUrl = 'https://maps.app.goo.gl/jiFTTkV7hQH4sr269';
 
@@ -35,9 +37,13 @@ export default function App() {
     return 'ru';
   });
 
-  const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const userPausedManuallyRef = useRef<boolean>(false);
+  const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(() => audioManager.getIsPlaying());
+
+  useEffect(() => {
+    return audioManager.subscribe((playing) => {
+      setIsPlayingMusic(playing);
+    });
+  }, []);
 
   const t = translations[lang];
 
@@ -50,157 +56,12 @@ export default function App() {
     }
   };
 
-  const handleAudioError = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    if (audio.src.endsWith('/music/wedding.mp3')) {
-      audio.src = '/music/music.mp3';
-      audio.load();
-      if (!userPausedManuallyRef.current) {
-        audio.play().then(() => setIsPlayingMusic(true)).catch(() => {});
-      }
-    }
-  };
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    // Синхронизация состояния кнопки с реальным аудиопотоком
-    const onPlay = () => setIsPlayingMusic(true);
-    const onPause = () => setIsPlayingMusic(false);
-
-    audio.addEventListener('play', onPlay);
-    audio.addEventListener('playing', onPlay);
-    audio.addEventListener('pause', onPause);
-    audio.addEventListener('ended', onPause);
-
-    // Функция гарантированного автозапуска звука при каждом заходе/обновлении
-    const attemptPlay = () => {
-      const el = audioRef.current;
-      if (!el || userPausedManuallyRef.current) return;
-
-      if (!el.paused) {
-        setIsPlayingMusic(true);
-        cleanupInteractionListeners();
-        return;
-      }
-
-      const promise = el.play();
-      if (promise !== undefined) {
-        promise
-          .then(() => {
-            setIsPlayingMusic(true);
-            cleanupInteractionListeners();
-          })
-          .catch(() => {
-            // Если браузер заблокировал прямой автозапуск до жеста,
-            // слушатели остаются активными и включат звук при первом же клике/тапе/скролле
-          });
-      }
-    };
-
-    // Слушатели на все типы взаимодействия (клик, тап, клавиатура, скролл)
-    const interactionEvents = [
-      'pointerdown',
-      'touchstart',
-      'touchend',
-      'mousedown',
-      'click',
-      'keydown',
-      'wheel',
-    ];
-
-    let listenersAttached = false;
-
-    const onUserGesture = () => {
-      attemptPlay();
-    };
-
-    const attachInteractionListeners = () => {
-      if (listenersAttached) return;
-      listenersAttached = true;
-      interactionEvents.forEach((evt) => {
-        window.addEventListener(evt, onUserGesture, { capture: true, passive: true });
-        document.addEventListener(evt, onUserGesture, { capture: true, passive: true });
-      });
-    };
-
-    const cleanupInteractionListeners = () => {
-      if (!listenersAttached) return;
-      listenersAttached = false;
-      interactionEvents.forEach((evt) => {
-        window.removeEventListener(evt, onUserGesture, { capture: true });
-        document.removeEventListener(evt, onUserGesture, { capture: true });
-      });
-    };
-
-    attachInteractionListeners();
-
-    // 1. Пробуем воспроизвести сразу при монтировании
-    attemptPlay();
-
-    // 2. Пробуем воспроизвести через 300мс (когда завершится первичный рендер)
-    const timer = setTimeout(() => {
-      attemptPlay();
-    }, 300);
-
-    // 3. Также пробуем запустить, когда пользователь переключается на эту вкладку
-    const onVisibilityChange = () => {
-      if (document.visibilityState === 'visible' && !userPausedManuallyRef.current) {
-        attemptPlay();
-      }
-    };
-    document.addEventListener('visibilitychange', onVisibilityChange);
-
-    return () => {
-      clearTimeout(timer);
-      cleanupInteractionListeners();
-      document.removeEventListener('visibilitychange', onVisibilityChange);
-      audio.removeEventListener('play', onPlay);
-      audio.removeEventListener('playing', onPlay);
-      audio.removeEventListener('pause', onPause);
-      audio.removeEventListener('ended', onPause);
-    };
-  }, []);
-
   const toggleMusic = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (!audio.paused) {
-      // Пользователь осознанно нажал выключить звук
-      userPausedManuallyRef.current = true;
-      audio.pause();
-      setIsPlayingMusic(false);
-    } else {
-      // Пользователь включил звук
-      userPausedManuallyRef.current = false;
-      audio
-        .play()
-        .then(() => {
-          setIsPlayingMusic(true);
-        })
-        .catch((err) => {
-          console.warn('Не удалось воспроизвести аудиофайл:', err);
-        });
-    }
+    audioManager.toggle();
   };
 
   return (
     <div className="min-h-screen bg-[#f7f6f2] flex justify-center py-0 sm:py-8 antialiased text-[#222222]">
-      {/* Native background audio element */}
-      <audio
-        ref={audioRef}
-        id="wedding-bg-audio"
-        src="/music/wedding.mp3"
-        autoPlay
-        loop
-        playsInline
-        preload="auto"
-        onError={handleAudioError}
-      />
-
       {/* Language Switcher floating elegantly in the top-right */}
       <LanguageSwitcher currentLang={lang} onLanguageChange={handleLanguageChange} />
 
