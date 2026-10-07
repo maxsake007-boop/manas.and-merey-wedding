@@ -47,6 +47,7 @@ export async function sendRsvp(payload: RsvpPayload): Promise<{ success: boolean
       await fetch(sheetsUrl, {
         method: 'POST',
         mode: 'no-cors',
+        keepalive: true,
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload),
       });

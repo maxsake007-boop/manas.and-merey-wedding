@@ -52,15 +52,19 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({ t }) => {
       submittedAt: new Date().toISOString(),
     };
 
-    try {
-      await sendRsvp(data);
+    // Запускаем отправку в Google Таблицы в фоне
+    const sendPromise = sendRsvp(data);
+
+    // Мгновенный отклик интерфейса (400 мс для плавной анимации клика),
+    // чтобы гость не ждал 5-10 секунд ответа Google Таблицы
+    setTimeout(() => {
       setIsSubmitted(true);
-    } catch (err) {
-      console.warn('RSVP send error:', err);
-      setIsSubmitted(true);
-    } finally {
       setIsSubmitting(false);
-    }
+    }, 400);
+
+    sendPromise.catch((err) => {
+      console.warn('RSVP background send error:', err);
+    });
   };
 
   const handleEdit = () => {
