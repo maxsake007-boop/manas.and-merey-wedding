@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Great Vibes Custom';
+  src: url('/fonts/GreatVibes-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Marck Script Custom';
+  src: url('/fonts/MarckScript-Regular.ttf') format('truetype');
+  font-display: swap;
+}
+
 @layer base {
   body {
     background-color: #f7f6f2;
