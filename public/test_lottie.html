@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Lottie Test - Анимация из папки animation</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      background: #f7f6f2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      font-family: sans-serif;
+    }
+    #anim-container {
+      width: 900px;
+      max-width: 95vw;
+      height: 550px;
+      max-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn {
+      padding: 14px 36px;
+      font-size: 18px;
+      border-radius: 999px;
+      background: #222;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      margin-top: 15px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+      transition: transform 0.2s;
+    }
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    .info {
+      color: #666;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h2 style="font-style: italic; color: #333; margin-bottom: 5px;">Анимация самолётика из папки animation/t0y99yWlsv.json</h2>
+  <div id="anim-container"></div>
+  <button class="btn" onclick="playAnim()">Запустить анимацию (Play)</button>
+  <div class="info">Источник: <code>/animation/t0y99yWlsv.json</code></div>
+
+  <script>
+    const anim = lottie.loadAnimation({
+      container: document.getElementById('anim-container'),
+      renderer: 'svg',
+      loop: true,
+      autoplay: true,
+      path: '/animation/t0y99yWlsv.json'
+    });
+
+    function playAnim() {
+      anim.goToAndPlay(0, true);
+    }
+  </script>
+</body>
+</html>

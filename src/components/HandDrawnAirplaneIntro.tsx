@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import lottie, { AnimationItem } from 'lottie-web/build/player/lottie_light';
+import lottie, { AnimationItem } from 'lottie-web';
 import { audioManager } from '../services/audioManager';
-import animationData from '../assets/plane-animation.json';
 
 interface HandDrawnAirplaneIntroProps {
   t: {
@@ -18,7 +17,7 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
   const lottieContainerRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<AnimationItem | null>(null);
 
-  // Initialize Lottie animation from public/animation folder (t0y99yWlsv.json)
+  // Directly load the user's animation file from public/animation/t0y99yWlsv.json
   useEffect(() => {
     if (lottieContainerRef.current) {
       const anim = lottie.loadAnimation({
@@ -26,7 +25,7 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
         renderer: 'svg',
         loop: false,
         autoplay: false,
-        animationData: animationData,
+        path: '/animation/t0y99yWlsv.json',
         rendererSettings: {
           preserveAspectRatio: 'xMidYMid meet',
         },
@@ -34,7 +33,7 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
 
       animRef.current = anim;
 
-      // When the airplane finishes its loop flight and flies off-screen:
+      // When the Lottie airplane finishes its 360° loop and flies off-screen:
       anim.addEventListener('complete', () => {
         setIsFadingOut(true);
         setTimeout(() => {
@@ -51,10 +50,10 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
   const handleOpen = () => {
     if (isFlying) return;
 
-    // 1. Play music immediately on user gesture
+    // 1. Play background music immediately on click
     audioManager.tryPlay();
 
-    // 2. Hide intro UI and trigger Lottie flight
+    // 2. Hide static UI and play the Lottie animation
     setIsFlying(true);
 
     if (animRef.current) {
@@ -71,7 +70,7 @@ export const HandDrawnAirplaneIntro: React.FC<HandDrawnAirplaneIntroProps> = ({ 
         backgroundColor: '#f7f6f2',
       }}
     >
-      {/* Fullscreen Lottie Airplane Loop Animation */}
+      {/* Fullscreen Lottie Animation from public/animation/t0y99yWlsv.json */}
       <div
         ref={lottieContainerRef}
         className={`fixed inset-0 w-full h-full pointer-events-none z-20 transition-opacity duration-200 ${
