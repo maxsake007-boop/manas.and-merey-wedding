@@ -59,6 +59,9 @@ export default function App() {
     audio.addEventListener('error', () => {
       if (audio.src.endsWith('/music/wedding.mp3')) {
         audio.src = '/music/music.mp3';
+        if (isPlayingMusic) {
+          audio.play().catch(() => {});
+        }
       }
     });
 
@@ -68,7 +71,47 @@ export default function App() {
 
     audioRef.current = audio;
 
+    let hasStarted = false;
+
+    // Функция гарантированного автозапуска звука при открытии/обновлении
+    const startAudio = () => {
+      if (hasStarted) return;
+      audio
+        .play()
+        .then(() => {
+          hasStarted = true;
+          setIsPlayingMusic(true);
+          cleanupListeners();
+        })
+        .catch(() => {
+          // Если браузер заблокировал прямой автозапуск до взаимодействия,
+          // аудио автоматически включится при первом же клике, тапе или скролле
+          setIsPlayingMusic(false);
+        });
+    };
+
+    const handleFirstGesture = () => {
+      startAudio();
+    };
+
+    const cleanupListeners = () => {
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('touchstart', handleFirstGesture);
+      window.removeEventListener('scroll', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+    };
+
+    // Слушатели первого же взаимодействия с экраном (клик, тап, скролл)
+    window.addEventListener('click', handleFirstGesture, { once: true });
+    window.addEventListener('touchstart', handleFirstGesture, { once: true, passive: true });
+    window.addEventListener('scroll', handleFirstGesture, { once: true, passive: true });
+    window.addEventListener('keydown', handleFirstGesture, { once: true });
+
+    // Пробуем запустить воспроизведение сразу же
+    startAudio();
+
     return () => {
+      cleanupListeners();
       audio.pause();
       audio.src = '';
     };
@@ -96,31 +139,32 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f7f6f2] flex justify-center py-0 sm:py-8 antialiased text-[#222222]">
-      {/* Language Switcher floating elegantly in the top-left */}
+      {/* Language Switcher floating elegantly in the top-right */}
       <LanguageSwitcher currentLang={lang} onLanguageChange={handleLanguageChange} />
 
-      {/* Background ambient music button floating discreetly in the top-right */}
+      {/* Background ambient music button floating in the bottom-right corner */}
       <button
         type="button"
         onClick={toggleMusic}
-        className="fixed top-4 right-4 z-40 bg-white/85 hover:bg-white text-stone-700 p-2.5 rounded-full shadow-md backdrop-blur-md transition-all border border-stone-200/60 flex items-center gap-1.5 text-xs select-none active:scale-95 cursor-pointer"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 bg-white/90 hover:bg-white text-stone-700 p-2.5 sm:p-3 rounded-full shadow-lg backdrop-blur-md transition-all border border-stone-200/70 flex items-center gap-1.5 text-xs select-none active:scale-95 cursor-pointer hover:shadow-xl"
         title={isPlayingMusic ? t.music.pauseTitle : t.music.playTitle}
+        aria-label={isPlayingMusic ? t.music.pauseTitle : t.music.playTitle}
       >
         {isPlayingMusic ? (
           <>
-            <Volume2 className="w-4 h-4 text-[#6e7a63] animate-pulse" />
-            <span className="hidden sm:inline text-[11px] font-sans text-stone-600">{t.music.label}</span>
+            <Volume2 className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#6e7a63] animate-pulse" />
+            <span className="hidden sm:inline text-[11px] font-sans text-stone-600 font-medium">{t.music.label}</span>
           </>
         ) : (
           <>
-            <VolumeX className="w-4 h-4 text-stone-400" />
-            <span className="hidden sm:inline text-[11px] font-sans text-stone-500">{t.music.label}</span>
+            <VolumeX className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-stone-400" />
+            <span className="hidden sm:inline text-[11px] font-sans text-stone-500 font-medium">{t.music.label}</span>
           </>
         )}
       </button>
 
       {/* Main Single-Column Wedding Invitation Container */}
-      <main className="w-full max-w-[420px] bg-white shadow-xl sm:rounded-[24px] sm:border sm:border-stone-200/50 overflow-hidden relative pb-12">
+      <main className="w-full max-w-[420px] bg-white shadow-xl sm:rounded-[24px] sm:border sm:border-stone-200/50 overflow-hidden relative">
         
         {/* ========================================================= */}
         {/* SECTION 1: CHILDHOOD POLAROIDS & STORY                    */}

@@ -66,7 +66,7 @@ export const WeddingCountdownCalendar: React.FC<WeddingCountdownCalendarProps> =
   ];
 
   return (
-    <section className="pt-8 pb-12 px-5 sm:px-8 border-t border-stone-200/60 bg-gradient-to-b from-transparent to-[#faf9f6]/80">
+    <section className="pt-8 pb-14 px-5 sm:px-8 border-t border-stone-200/60 bg-white">
       
       {/* ========================================================= */}
       {/* 1. CALENDAR MONTH WITH HEART ON OCTOBER 22               */}

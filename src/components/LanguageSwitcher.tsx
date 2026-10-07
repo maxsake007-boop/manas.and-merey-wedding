@@ -18,7 +18,7 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
 
   return (
     <div
-      className="fixed top-4 left-4 z-40 bg-white/85 hover:bg-white text-stone-700 p-1 rounded-full shadow-md backdrop-blur-md transition-all border border-stone-200/60 flex items-center gap-0.5 select-none"
+      className="fixed top-4 right-4 z-40 bg-white/90 hover:bg-white text-stone-700 p-1 rounded-full shadow-md backdrop-blur-md transition-all border border-stone-200/70 flex items-center gap-0.5 select-none"
       role="group"
       aria-label="Выбор языка"
     >
