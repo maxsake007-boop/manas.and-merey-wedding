@@ -230,11 +230,19 @@ export default function App() {
             </ScrollReveal>
 
             <ScrollReveal animation="fade-up" delay={440}>
-              <p>
-                {t.section1.p4_1}
-                <br />
-                {t.section1.p4_2}
-              </p>
+              <div className="space-y-0.5 pt-1">
+                <p className="text-[17px] sm:text-[18px] text-stone-800">
+                  {t.section1.p4_1}
+                </p>
+                {t.section1.p4_2 && (
+                  <p
+                    className="text-[25px] sm:text-[27px] font-semibold text-stone-900 tracking-wide select-none leading-normal"
+                    style={{ fontFamily: "'Caveat', cursive, sans-serif" }}
+                  >
+                    {t.section1.p4_2}
+                  </p>
+                )}
+              </div>
             </ScrollReveal>
           </div>
 
