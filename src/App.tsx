@@ -29,13 +29,13 @@ export default function App() {
   const [lang, setLang] = useState<Language>(() => {
     try {
       const saved = localStorage.getItem('wedding_invitation_lang');
-      if (saved === 'ru' || saved === 'kz' || saved === 'uz') {
+      if (saved === 'kz' || saved === 'uz' || saved === 'ru') {
         return saved;
       }
     } catch {
       // ignore
     }
-    return 'ru';
+    return 'kz';
   });
 
   const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(() => audioManager.getIsPlaying());

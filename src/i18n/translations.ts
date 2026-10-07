@@ -1,4 +1,4 @@
-export type Language = 'ru' | 'kz' | 'uz';
+export type Language = 'kz' | 'uz' | 'ru';
 
 export interface Translations {
   music: {

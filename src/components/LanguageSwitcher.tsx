@@ -11,9 +11,9 @@ export const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({
   onLanguageChange,
 }) => {
   const languages: { code: Language; label: string }[] = [
-    { code: 'ru', label: 'RU' },
     { code: 'kz', label: 'KZ' },
     { code: 'uz', label: 'UZ' },
+    { code: 'ru', label: 'RU' },
   ];
 
   return (
