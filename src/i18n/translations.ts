@@ -86,10 +86,24 @@ export interface Translations {
     minutes: string;
     seconds: string;
   };
+  intro: {
+    title: string;
+    date: string;
+    openBtn: string;
+    musicHint: string;
+    skip: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {
   ru: {
+    intro: {
+      title: 'Пригласительное от Манаса и Мерей...',
+      date: '22 октября 2026',
+      openBtn: 'Открыть',
+      musicHint: 'включится музыка',
+      skip: 'Пропустить',
+    },
     music: {
       label: 'Музыка',
       playTitle: 'Включить фоновую музыку',
@@ -178,6 +192,13 @@ export const translations: Record<Language, Translations> = {
   },
 
   kz: {
+    intro: {
+      title: 'Манас пен Мерейден шақыру...',
+      date: '22 қазан 2026',
+      openBtn: 'Ашу',
+      musicHint: 'әуен қосылады',
+      skip: 'Өткізіп жіберу',
+    },
     music: {
       label: 'Музыка',
       playTitle: 'Әуенді қосу',
@@ -266,6 +287,13 @@ export const translations: Record<Language, Translations> = {
   },
 
   uz: {
+    intro: {
+      title: 'Manas va Mereydan taklifnoma...',
+      date: '22 oktyabr 2026',
+      openBtn: 'Ochish',
+      musicHint: 'musiqa yoqiladi',
+      skip: 'O‘tkazib yuborish',
+    },
     music: {
       label: 'Musiqa',
       playTitle: 'Musiqani yoqish',

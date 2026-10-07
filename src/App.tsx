@@ -14,8 +14,9 @@ import {
 import { PhotoFrame } from './components/PhotoArt';
 import { RsvpSection } from './components/RsvpSection';
 import { WeddingCountdownCalendar } from './components/WeddingCountdownCalendar';
-import { ScrollReveal } from './components/ScrollReveal';
+import { ScrollReveal, IntroReadyContext } from './components/ScrollReveal';
 import { LanguageSwitcher } from './components/LanguageSwitcher';
+import { HandDrawnAirplaneIntro } from './components/HandDrawnAirplaneIntro';
 import { Language, translations } from './i18n/translations';
 import { Volume2, VolumeX, ExternalLink, MapPin } from 'lucide-react';
 
@@ -38,6 +39,7 @@ export default function App() {
   });
 
   const [isPlayingMusic, setIsPlayingMusic] = useState<boolean>(() => audioManager.getIsPlaying());
+  const [isIntroOpen, setIsIntroOpen] = useState<boolean>(false);
 
   useEffect(() => {
     return audioManager.subscribe((playing) => {
@@ -62,32 +64,40 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#f7f6f2] flex justify-center py-0 sm:py-8 antialiased text-[#222222]">
+      {/* Hand-Drawn Paper Airplane Intro Screen */}
+      {!isIntroOpen && (
+        <HandDrawnAirplaneIntro t={t.intro} onOpen={() => setIsIntroOpen(true)} />
+      )}
+
       {/* Language Switcher floating elegantly in the top-right */}
       <LanguageSwitcher currentLang={lang} onLanguageChange={handleLanguageChange} />
 
-      {/* Background ambient music button floating in the bottom-right corner */}
-      <button
-        type="button"
-        onClick={toggleMusic}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 bg-white/90 hover:bg-white text-stone-700 p-2.5 sm:p-3 rounded-full shadow-lg backdrop-blur-md transition-all border border-stone-200/70 flex items-center gap-1.5 text-xs select-none active:scale-95 cursor-pointer hover:shadow-xl"
-        title={isPlayingMusic ? t.music.pauseTitle : t.music.playTitle}
-        aria-label={isPlayingMusic ? t.music.pauseTitle : t.music.playTitle}
-      >
-        {isPlayingMusic ? (
-          <>
-            <Volume2 className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#6e7a63] animate-pulse" />
-            <span className="hidden sm:inline text-[11px] font-sans text-stone-600 font-medium">{t.music.label}</span>
-          </>
-        ) : (
-          <>
-            <VolumeX className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-stone-400" />
-            <span className="hidden sm:inline text-[11px] font-sans text-stone-500 font-medium">{t.music.label}</span>
-          </>
-        )}
-      </button>
+      {/* Background ambient music button floating in the bottom-right corner (revealed once opened) */}
+      {isIntroOpen && (
+        <button
+          type="button"
+          onClick={toggleMusic}
+          className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 bg-white/90 hover:bg-white text-stone-700 p-2.5 sm:p-3 rounded-full shadow-lg backdrop-blur-md transition-all border border-stone-200/70 flex items-center gap-1.5 text-xs select-none active:scale-95 cursor-pointer hover:shadow-xl"
+          title={isPlayingMusic ? t.music.pauseTitle : t.music.playTitle}
+          aria-label={isPlayingMusic ? t.music.pauseTitle : t.music.playTitle}
+        >
+          {isPlayingMusic ? (
+            <>
+              <Volume2 className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-[#6e7a63] animate-pulse" />
+              <span className="hidden sm:inline text-[11px] font-sans text-stone-600 font-medium">{t.music.label}</span>
+            </>
+          ) : (
+            <>
+              <VolumeX className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-stone-400" />
+              <span className="hidden sm:inline text-[11px] font-sans text-stone-600 font-medium">{t.music.label}</span>
+            </>
+          )}
+        </button>
+      )}
 
-      {/* Main Single-Column Wedding Invitation Container */}
-      <main className="w-full max-w-[420px] bg-white shadow-xl sm:rounded-[24px] sm:border sm:border-stone-200/50 overflow-hidden relative">
+      {/* Main Single-Column Wedding Invitation Container wrapped in IntroReadyContext */}
+      <IntroReadyContext.Provider value={isIntroOpen}>
+        <main className="w-full max-w-[420px] bg-white shadow-xl sm:rounded-[24px] sm:border sm:border-stone-200/50 overflow-hidden relative">
         
         {/* ========================================================= */}
         {/* SECTION 1: CHILDHOOD POLAROIDS & STORY                    */}
@@ -429,6 +439,7 @@ export default function App() {
         <WeddingCountdownCalendar t={t.calendar} />
 
       </main>
+      </IntroReadyContext.Provider>
     </div>
   );
 }

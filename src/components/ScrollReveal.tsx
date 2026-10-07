@@ -1,4 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+
+export const IntroReadyContext = createContext<boolean>(true);
 
 export type AnimationType =
   | 'fade-up'
@@ -35,8 +37,14 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const isIntroReady = useContext(IntroReadyContext);
 
   useEffect(() => {
+    if (!isIntroReady) {
+      setIsVisible(false);
+      return;
+    }
+
     const el = ref.current;
     if (!el) return;
 
@@ -62,7 +70,7 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [threshold, rootMargin]);
+  }, [isIntroReady, threshold, rootMargin]);
 
   // Generate appropriate transform and opacity based on animation type and isVisible state
   const getStyles = (): React.CSSProperties => {
