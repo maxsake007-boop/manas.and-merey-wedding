@@ -1,0 +1,325 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    background-color: #f7f6f2;
+    color: #222222;
+    font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+    overflow-x: hidden;
+  }
+}
+
+.font-heading {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.font-serif-clean {
+  font-family: 'EB Garamond', 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-polaroid {
+  font-family: 'Comfortaa', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.font-doodle {
+  font-family: 'Caveat', cursive;
+}
+
+.font-handwritten {
+  font-family: 'Caveat', 'Marck Script', 'Bad Script', cursive;
+}
+
+/* ========================================================= */
+/* CSS ANIMATIONS & TRANSITIONS                              */
+/* ========================================================= */
+
+@keyframes polaroidDropLeft {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) rotate(-8deg) scale(0.92);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(-2deg) scale(1);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 3px 8px -1px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@keyframes polaroidDropRight {
+  0% {
+    opacity: 0;
+    transform: translateY(28px) rotate(8deg) scale(0.92);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(2deg) scale(1);
+    box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 3px 8px -1px rgba(0, 0, 0, 0.05);
+  }
+}
+
+@keyframes photoZoomBloom {
+  0% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeSlideRight {
+  0% {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes heartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.18);
+  }
+  30% {
+    transform: scale(1.04);
+  }
+  45% {
+    transform: scale(1.15);
+  }
+  60% {
+    transform: scale(1);
+  }
+}
+
+@keyframes stickSway {
+  0% {
+    transform: rotate(-1.5deg);
+  }
+  100% {
+    transform: rotate(1.5deg);
+  }
+}
+
+@keyframes giftWiggle {
+  0%, 80%, 100% {
+    transform: rotate(0deg);
+  }
+  85% {
+    transform: rotate(-4deg);
+  }
+  90% {
+    transform: rotate(4deg);
+  }
+  95% {
+    transform: rotate(-2deg);
+  }
+}
+
+@keyframes carDriveIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-35px) scale(0.9);
+  }
+  70% {
+    transform: translateX(4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes flowerBloom {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) rotate(-45deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes gentlePulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
+
+/* Animation Classes */
+.animate-polaroid-left {
+  animation: polaroidDropLeft 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-polaroid-right {
+  animation: polaroidDropRight 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-photo-bloom {
+  animation: photoZoomBloom 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-up {
+  animation: fadeSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-right {
+  animation: fadeSlideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-heartbeat {
+  animation: heartBeat 2.4s ease-in-out infinite;
+}
+
+.animate-stick-sway {
+  animation: stickSway 2.5s ease-in-out infinite alternate;
+}
+
+.animate-gift-wiggle {
+  animation: giftWiggle 3.5s ease-in-out infinite;
+}
+
+.animate-car-drive {
+  animation: carDriveIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-flower-bloom {
+  animation: flowerBloom 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.animate-pulse-gentle {
+  animation: gentlePulse 3s ease-in-out infinite;
+}
+
+/* Stagger Delays */
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+
+/* Polaroid Card Styling with gentle hover floating */
+.polaroid-card {
+  background: #ffffff;
+  padding: 10px 10px 14px 10px;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.polaroid-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.14), 0 4px 12px -2px rgba(0, 0, 0, 0.08);
+}
+
+/* Olive Green Button Styling */
+.btn-olive {
+  background-color: #6e7a63;
+  color: #ffffff;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-olive:hover {
+  background-color: #5f6b55;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(110, 122, 99, 0.3);
+}
+
+.btn-olive:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* Underline Input Styling */
+.input-underline {
+  border: none;
+  border-bottom: 1.5px solid #d6d3d1;
+  background: transparent;
+  outline: none;
+  transition: border-color 0.25s ease, padding 0.25s ease;
+}
+
+.input-underline:focus {
+  border-bottom-color: #292524;
+}
+
+/* Custom Radio Styling matching screenshot */
+.custom-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid #292524;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  background: transparent;
+}
+
+.custom-radio:hover {
+  border-color: #6e7a63;
+  transform: scale(1.08);
+}
+
+.custom-radio::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 160ms transform cubic-bezier(0.34, 1.56, 0.64, 1);
+  background-color: #292524;
+}
+
+.custom-radio:checked::before {
+  transform: scale(1);
+}
+
+/* Safe scroll behavior */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
