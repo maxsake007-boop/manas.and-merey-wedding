@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ScrollReveal } from './ScrollReveal';
 import { Translations } from '../i18n/translations';
 
-// Target wedding date: October 22, 2026 at 18:00 (Банкет в Tinchlik Plaza, Навои, UTC+5)
+// Target wedding date: October 22, 2026 at 18:00 (Банкет в Tinchlik to‘yxona, Кармана / Навои, UTC+5)
 const WEDDING_TARGET_DATE = new Date('2026-10-22T18:00:00+05:00').getTime();
 
 interface TimeLeft {

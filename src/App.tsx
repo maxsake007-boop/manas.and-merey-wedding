@@ -22,8 +22,8 @@ import { Volume2, VolumeX, ExternalLink, MapPin, ChevronDown } from 'lucide-reac
 
 import { audioManager } from './services/audioManager';
 
-const yandexMapsUrl = 'https://yandex.ru/maps/org/tinchlik_plaza/11816632627?si=azm5gkzchh91458fvjetknjg1c';
-const googleMapsUrl = 'https://maps.app.goo.gl/jiFTTkV7hQH4sr269';
+const yandexMapsUrl = 'https://yandex.ru/maps/org/tinchlik/65209758021/';
+const googleMapsUrl = 'https://maps.app.goo.gl/RihsBShAfQNfPRcA8';
 
 export default function App() {
   const [lang, setLang] = useState<Language>(() => {
@@ -394,7 +394,7 @@ export default function App() {
                 <div className="rounded-xl overflow-hidden border border-stone-200 shadow-2xs relative aspect-[4/3] bg-stone-100">
                   <iframe
                     title={t.location.mapIframeTitle}
-                    src="https://maps.google.com/maps?q=40.1008987,65.3852887&hl=ru&z=17&output=embed"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20531.729671124744!2d65.38097464325972!3d40.096377944796004!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f51c37131fe98c3%3A0x7eae3c11016fe8dd!2sTinchlik%20to%E2%80%99yxona!5e0!3m2!1sen!2s!4v1791902877592!5m2!1sen!2s"
                     className="w-full h-full border-0"
                     loading="lazy"
                     allowFullScreen
